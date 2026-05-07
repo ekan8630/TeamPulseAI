@@ -83,7 +83,10 @@ export default function ProjectBoard() {
 
   const [createOpen, setCreateOpen] = useState(false)
   const [editOpen, setEditOpen] = useState(false)
+  const [activityOpen, setActivityOpen] = useState(false)
   const [activeTask, setActiveTask] = useState(null)
+  const [activityItems, setActivityItems] = useState([])
+  const [activityLoading, setActivityLoading] = useState(false)
 
   const [formTitle, setFormTitle] = useState('')
   const [formDesc, setFormDesc] = useState('')
@@ -326,7 +329,7 @@ export default function ProjectBoard() {
             ref={searchRef}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search tasks… (Ctrl+K)"
+            placeholder="Search tasks... (Ctrl+K)"
             style={{
               width: 260,
               maxWidth: '80vw',
@@ -363,6 +366,32 @@ export default function ProjectBoard() {
           >
             + Create task
           </button>
+          <button
+            onClick={async () => {
+              setActivityOpen(true)
+              setActivityLoading(true)
+              try {
+                const res = await http.get(`/dashboard/projects/${projectId}/activity?limit=20`)
+                setActivityItems(res.data?.activities ?? [])
+              } catch (err) {
+                pushToast({ type: 'error', title: 'Activity load failed', message: err?.response?.data?.message ?? 'Please try again' })
+              } finally {
+                setActivityLoading(false)
+              }
+            }}
+            style={{
+              padding: '11px 14px',
+              borderRadius: 14,
+              border: '1px solid rgba(255,255,255,0.14)',
+              background: 'rgba(255,255,255,0.05)',
+              color: 'white',
+              fontWeight: 900,
+              cursor: 'pointer',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            View activity
+          </button>
         </div>
       </div>
 
@@ -371,7 +400,7 @@ export default function ProjectBoard() {
           <Spinner size={34} />
         </div>
       ) : (
-        <div style={{ marginTop: 14, display: 'grid', gridTemplateColumns: 'repeat(3, minmax(260px, 1fr))', gap: 12 }}>
+        <div style={{ marginTop: 14, display: 'flex', gap: 12, overflowX: 'auto', paddingBottom: 6 }}>
           {STATUS.map((col) => (
             <div
               key={col.key}
@@ -387,6 +416,7 @@ export default function ProjectBoard() {
                 background: col.tint,
                 overflow: 'hidden',
                 minHeight: 520,
+                minWidth: 300,
                 display: 'flex',
                 flexDirection: 'column',
               }}
@@ -438,7 +468,7 @@ export default function ProjectBoard() {
                             <div style={{ fontWeight: 950, lineHeight: 1.25, wordBreak: 'break-word' }}>{t.title}</div>
                             <div style={{ fontSize: 12, opacity: 0.85, marginTop: 6, lineHeight: 1.4 }}>
                               {t.description ? t.description.slice(0, 78) : 'No description'}
-                              {t.description && t.description.length > 78 ? '…' : ''}
+                              {t.description && t.description.length > 78 ? '...' : ''}
                             </div>
                           </div>
                           <div style={{ display: 'grid', gap: 8, justifyItems: 'end' }}>
@@ -891,6 +921,46 @@ export default function ProjectBoard() {
           </div>
         ) : (
           <div style={{ padding: 12, opacity: 0.85 }}>No active task selected.</div>
+        )}
+      </Modal>
+
+      <Modal
+        open={activityOpen}
+        title="Project activity timeline"
+        onClose={() => {
+          setActivityOpen(false)
+          setActivityItems([])
+        }}
+        width={760}
+      >
+        {activityLoading ? (
+          <div style={{ display: 'grid', placeItems: 'center', padding: 18 }}>
+            <Spinner size={30} />
+          </div>
+        ) : activityItems.length ? (
+          <div style={{ display: 'grid', gap: 10, maxHeight: 430, overflow: 'auto', paddingRight: 6 }}>
+            {activityItems.map((a) => (
+              <div
+                key={a.id}
+                style={{
+                  padding: 12,
+                  borderRadius: 16,
+                  border: '1px solid rgba(255,255,255,0.10)',
+                  background: 'rgba(255,255,255,0.04)',
+                }}
+              >
+                <div style={{ display: 'flex', justifyContent: 'space-between', gap: 10 }}>
+                  <div style={{ fontWeight: 950 }}>{a.message}</div>
+                  <div style={{ fontSize: 12, opacity: 0.85 }}>{new Date(a.createdAt).toLocaleString()}</div>
+                </div>
+                <div style={{ fontSize: 12, opacity: 0.8, marginTop: 6 }}>
+                  {a.actor?.name ? `By ${a.actor.name}` : 'System'}
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div style={{ fontSize: 13, opacity: 0.85 }}>No activity yet.</div>
         )}
       </Modal>
     </div>

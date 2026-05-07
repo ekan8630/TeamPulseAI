@@ -31,15 +31,12 @@ app.use('/api/teams', require('./routes/teamRoutes'))
 app.use('/api/projects', require('./routes/projectRoutes'))
 app.use('/api', require('./routes/taskRoutes'))
 app.use('/api/dashboard', require('./routes/dashboardRoutes'))
+app.get('/api/health', (_req, res) => {
+  res.json({ ok: true, service: 'teampulse-server' })
+})
 
 app.get('/', (req, res) => {
   res.send('TeamPulse AI Backend Running')
-})
-
-const PORT = process.env.PORT || 5000
-
-app.listen(PORT, () => {
-  console.log(`Server running on ${PORT}`)
 })
 
 app.use((_req, res) => {
@@ -47,3 +44,9 @@ app.use((_req, res) => {
 })
 
 app.use(errorHandler)
+
+const PORT = process.env.PORT || 5000
+
+app.listen(PORT, () => {
+  console.log(`Server running on ${PORT}`)
+})

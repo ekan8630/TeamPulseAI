@@ -13,7 +13,7 @@ function HomeRoute() {
   const { user, loading } = useAuth()
   if (loading) {
     return (
-      <div style={{ minHeight: '100vh', display: 'grid', placeItems: 'center' }}>Loading…</div>
+      <div style={{ minHeight: '100vh', display: 'grid', placeItems: 'center' }}>Loading...</div>
     )
   }
   if (user) return <Navigate to="/dashboard" replace />

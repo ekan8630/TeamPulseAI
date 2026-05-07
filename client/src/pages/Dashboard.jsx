@@ -180,8 +180,8 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '340px 1fr', gap: 14, padding: 14 }}>
-        <div style={{ borderRadius: 18, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', overflow: 'hidden' }}>
+      <div style={{ flex: 1, display: 'flex', gap: 14, padding: 14, flexWrap: 'wrap' }}>
+        <div style={{ borderRadius: 18, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', overflow: 'hidden', flex: '0 0 340px', minWidth: 300 }}>
           <div style={{ padding: 14, borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
             <div style={{ fontWeight: 900, marginBottom: 8 }}>Your Teams</div>
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
@@ -294,7 +294,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div style={{ borderRadius: 18, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', padding: 14, overflow: 'hidden' }}>
+        <div style={{ borderRadius: 18, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', padding: 14, overflow: 'hidden', flex: '1 1 520px', minWidth: 320 }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 12 }}>
             {dashboard ? (
               <>
