@@ -155,7 +155,7 @@ export default function Dashboard() {
       >
         <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
           <div style={{ width: 10, height: 10, borderRadius: '50%', background: 'linear-gradient(135deg, rgba(99,102,241,1), rgba(16,185,129,1))' }} />
-          <div style={{ fontWeight: 900, letterSpacing: 0.2 }}>TeamPulse AI</div>
+          <div style={{ fontWeight: 900, letterSpacing: 0.2 }}>WorkSphere</div>
           <div style={{ fontSize: 13, opacity: 0.85 }}>Dashboard</div>
         </div>
 

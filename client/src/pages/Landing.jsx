@@ -35,7 +35,7 @@ export default function Landing() {
               }}
             />
             <div>
-              <div style={{ fontWeight: 900, letterSpacing: 0.2 }}>TeamPulse AI</div>
+              <div style={{ fontWeight: 900, letterSpacing: 0.2 }}>WorkSphere</div>
               <div style={{ fontSize: 13, opacity: 0.85 }}>Smart Team Task Manager</div>
             </div>
           </div>
